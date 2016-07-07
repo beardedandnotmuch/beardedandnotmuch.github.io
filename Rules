@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby
+
+unless defined? LOADED_DEFAULT_CONFIG
+  LOADED_DEFAULT_CONFIG = true
+  require 'compass'
+  Compass.add_project_configuration 'config.rb'
+end
+
+# This is an example rule that matches Markdown (.md) files, and filters them
+# using the :kramdown filter. It is commented out by default, because kramdown
+# is not bundled with Nanoc or Ruby.
+
+compile '/articles/**/*.md' do
+ filter :erb
+ filter :html_pipeline, @config[:pipeline_config]
+ layout(item[:layout] ? "/#{item[:layout]}.*" : '/article.*')
+end
+
+route '/**/*.{html,md}' do
+  if item.identifier =~ '/index.*'
+    '/index.html'
+  else
+    item.identifier.without_ext + '/index.html'
+  end
+end
+
+compile '/**/*.html' do
+  filter :erb
+  layout(item[:layout] ? "/#{item[:layout]}.*" : '/default.*')
+end
+
+compile '/assets/**/*' do
+  ext = @item.identifier.ext
+
+  if ext == 'scss'
+    filter :sass, Compass.sass_engine_options
+    write @item.identifier.without_ext + '.css'
+  else
+    write item.identifier.to_s
+  end
+
+end
+
+layout '/**/*', :erb

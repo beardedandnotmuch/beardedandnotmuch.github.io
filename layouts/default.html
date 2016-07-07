@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%= render '/head.*' %>
+
+  <body>
+
+    <header class="marquee">
+      <div class="container">
+        <img class="logo" src="/assets/images/banm.png" alt="Banm Logo">
+      </div>
+      <%= link_to "Home", "/" %>
+      <%= link_to "About", "/about" %>
+    </header>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+          <%= yield %>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>
