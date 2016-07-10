@@ -4,8 +4,10 @@ title: Home
 
 <% articles[0, 10].each do |article| %>
 <p>
-  <%= link_to(article[:title], article.path) %> published at <%= article[:created_at] %> <br/>
-  <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
-  <%= tags_for(article) %> <br/>
+  <%= link_to(article[:title], article.path) %> published at <%= article[:created_at] %>
+  <p>
+    <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+    <%= tags_for(article, :base_url => "/tags/") %>
+  </p>
 </p>
 <% end %>

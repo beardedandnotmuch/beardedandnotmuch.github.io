@@ -1,22 +1,34 @@
 #!/usr/bin/env ruby
 
+require 'set'
+
 unless defined? LOADED_DEFAULT_CONFIG
   LOADED_DEFAULT_CONFIG = true
   require 'compass'
   Compass.add_project_configuration 'config.rb'
 end
 
-# This is an example rule that matches Markdown (.md) files, and filters them
-# using the :kramdown filter. It is commented out by default, because kramdown
-# is not bundled with Nanoc or Ruby.
+preprocess do
+  tags = Set.new
+  @items.select { |item| item.key?(:tags) }.each do |item|
+    item[:tags].each { |t| tags.add(t.downcase) }
+  end
 
-compile '/articles/**/*.md' do
- filter :erb
- filter :html_pipeline, @config[:pipeline_config]
- layout(item[:layout] ? "/#{item[:layout]}.*" : '/article.*')
+  tags.each do |tag|
+    @items.create("", { :tag => tag }, "/tags/#{tag}")
+  end
 end
 
-route '/**/*.{html,md}' do
+compile '/tags/*' do
+  layout '/tags.*'
+end
+
+compile '/articles/**/*.md' do
+  filter :html_pipeline, @config[:pipeline_config]
+  layout(item[:layout] ? "/#{item[:layout]}.*" : '/article.*')
+end
+
+route '/**/*' do
   if item.identifier =~ '/index.*'
     '/index.html'
   else

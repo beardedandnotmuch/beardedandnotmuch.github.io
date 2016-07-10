@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <%= render '/head.*' %>
@@ -8,14 +9,12 @@
     <div class="container">
       <div class="row">
         <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-          <h1><%= item[:title] %></h1>
-          <p>
-            published at <%= item[:created_at] %>
-          </p>
-          <p>
-            <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
-            <%= tags_for(item, :base_url => "/tags/") %><br/>
-          </p>
+          <h1><%= @item[:tag] %></h1>
+          <ul>
+            <% items_with_tag(@item[:tag]).each do |i| %>
+            <li><%= link_to i[:title], i %></li>
+            <% end %>
+          </ul>
           <%= yield %>
         </div>
       </div>

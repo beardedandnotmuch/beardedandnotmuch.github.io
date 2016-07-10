@@ -5,12 +5,19 @@ created_at: Jul 07, 2016
 kind: article
 ---
 
+### Situation
+Almost finished project written on angularjs/yii2 is deployed to the server of
+consumer in the first time. After all technical preparation is done we found
+a bug: all PUT and DELETE requests gets 403 error from the server.
+
+### Analysis
 yii\web\UrlManager::rulesConfig
 overrided yii\web\UrlRule
 
 detailed look at `parseUrl`
 look into `yii\web\Request::getMethod()`
 
+### Solution
 angular hack
 
 ```javascript
