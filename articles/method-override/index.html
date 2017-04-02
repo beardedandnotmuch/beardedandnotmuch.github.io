@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Banm's Blog - HTTP Method Override</title>
+
+  <link href="/assets/stylesheets/styles.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/styles/github.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default navbar-static-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        <img src="/assets/images/banm_sm.png" alt="Banm's Blog">
+      </a>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="/">Home</a></li>
+      <li><a href="/articles/">Articles</a></li>
+      <li><a href="/about/">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+          <h1>HTTP Method Override</h1>
+          <p>
+            published at Jul 07, 2016
+          </p>
+          <p>
+            <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+            <a href="/tags/angularjs" rel="tag">angularjs</a>, <a href="/tags/yii2" rel="tag">yii2</a>, <a href="/tags/http" rel="tag">http</a><br/>
+          </p>
+          
+### Situation
+Almost finished project written on angularjs/yii2 was deployed to the server of
+consumer at the first time. After all technical preparation was done we found
+a bug: all `PUT` and `DELETE` requests gets 403 error from the server.
+
+### Analysis
+The problem was that provider allows only `GET` and `POST` requests. So we should
+find the way to fix this and avoid mass changes in the code (due to estimate).
+yii\web\UrlManager::rulesConfig
+overrided yii\web\UrlRule
+
+detailed look at `parseUrl`
+look into `yii\web\Request::getMethod()`
+
+### Solution
+angular hack
+
+```javascript
+angular.config(function ($httpProvider) {
+    $httpProvider.interceptors.push(interceptor);
+});
+
+function interceptor($q) {
+    return {
+        request: function (config) {
+            if (['GET', 'POST'].indexOf(config.method) === -1) {
+                config.headers = config.headers || {};
+                config.headers['X-HTTP-Method-Override'] = config.method;
+                config.method = 'POST';
+            }
+
+            return config;
+        },
+    };
+}
+```
+
+        </div>
+      </div>
+    <footer>
+    © Bearded and not much, 2016
+</footer>
+
+
+    </div>
+
+
+  </body>
+</html>
