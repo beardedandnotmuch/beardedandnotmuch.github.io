@@ -101,3 +101,8 @@ pipeline_config:
   http_url:
   base_url: /
   asset_root:
+
+deploy:
+  default:
+    kind: git
+    branch: gh-pages
