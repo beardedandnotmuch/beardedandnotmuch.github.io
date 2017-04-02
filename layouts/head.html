@@ -8,7 +8,13 @@
 
   <title><%= "Banm's Blog - #{@item[:title]}" if @item[:title] %></title>
 
-  <link href="/assets/stylesheets/main.css" rel="stylesheet">
+  <link href="/assets/stylesheets/styles.css" rel="stylesheet">
+
+  <% if @highlight %>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/styles/github.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <% end %>
 
   <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>

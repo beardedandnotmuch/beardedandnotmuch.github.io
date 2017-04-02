@@ -6,11 +6,13 @@ kind: article
 ---
 
 ### Situation
-Almost finished project written on angularjs/yii2 is deployed to the server of
-consumer in the first time. After all technical preparation is done we found
-a bug: all PUT and DELETE requests gets 403 error from the server.
+Almost finished project written on angularjs/yii2 was deployed to the server of
+consumer at the first time. After all technical preparation was done we found
+a bug: all `PUT` and `DELETE` requests gets 403 error from the server.
 
 ### Analysis
+The problem was that provider allows only `GET` and `POST` requests. So we should
+find the way to fix this and avoid mass changes in the code (due to estimate).
 yii\web\UrlManager::rulesConfig
 overrided yii\web\UrlRule
 
