@@ -24,6 +24,7 @@ compile '/tags/*' do
 end
 
 compile '/articles/**/*.md' do
+  filter :html_pipeline, @config[:pipeline_config]
   layout(item[:layout] ? "/#{item[:layout]}.*" : '/article.*')
 end
 

@@ -92,7 +92,6 @@ checks:
 pipeline_config:
   pipeline:
     - :RedcarpetFilter
-    # - :ExtendedMarkdownFilter
     - :HTTPSFilter
     - :TableOfContentsfilter
     - :RougeFilter
@@ -105,4 +104,4 @@ pipeline_config:
 deploy:
   default:
     kind: git
-    branch: gh-pages
+    branch: master
