@@ -59,26 +59,30 @@
             <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
             <a href="/tags/angularjs" rel="tag">angularjs</a>, <a href="/tags/yii2" rel="tag">yii2</a>, <a href="/tags/http" rel="tag">http</a><br/>
           </p>
-          
-### Situation
-Almost finished project written on angularjs/yii2 was deployed to the server of
-consumer at the first time. After all technical preparation was done we found
-a bug: all `PUT` and `DELETE` requests gets 403 error from the server.
+          <h3>
+<a id="situation" class="anchor" href="#situation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Situation</h3>
 
-### Analysis
-The problem was that provider allows only `GET` and `POST` requests. So we should
+<p>Almost finished project written on angularjs/yii2 was deployed to the server of
+consumer at the first time. After all technical preparation was done we found
+a bug: all <code>PUT</code> and <code>DELETE</code> requests gets 403 error from the server.</p>
+
+<h3>
+<a id="analysis" class="anchor" href="#analysis" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Analysis</h3>
+
+<p>The problem was that provider allows only <code>GET</code> and <code>POST</code> requests. So we should
 find the way to fix this and avoid mass changes in the code (due to estimate).
 yii\web\UrlManager::rulesConfig
-overrided yii\web\UrlRule
+overrided yii\web\UrlRule</p>
 
-detailed look at `parseUrl`
-look into `yii\web\Request::getMethod()`
+<p>detailed look at <code>parseUrl</code>
+look into <code>yii\web\Request::getMethod()</code></p>
 
-### Solution
-angular hack
+<h3>
+<a id="solution" class="anchor" href="#solution" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Solution</h3>
 
-```javascript
-angular.config(function ($httpProvider) {
+<p>angular hack</p>
+
+<pre><code class="javascript">angular.config(function ($httpProvider) {
     $httpProvider.interceptors.push(interceptor);
 });
 
@@ -95,7 +99,7 @@ function interceptor($q) {
         },
     };
 }
-```
+</code></pre>
 
         </div>
       </div>
